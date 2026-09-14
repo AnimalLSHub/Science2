@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>แบบทดสอบปลายภาค ป.3 — สนุกกับวิทย์</title>
+<style>
+  :root{
+    --cream:#FBF7EF;
+    --card:#FFFFFF;
+    --moss:#5C7A5C;
+    --moss-dark:#3F5A3F;
+    --clay:#D98E63;
+    --clay-dark:#B96E45;
+    --sky:#7FA8B8;
+    --ink:#33362E;
+    --ink-soft:#6B6E62;
+    --line:#E7E0D2;
+    --good:#4C8B5E;
+    --good-bg:#E6F3E8;
+    --bad:#C1543A;
+    --bad-bg:#FBEAE4;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Sarabun','Noto Sans Thai','Segoe UI',sans-serif;
+    background:
+      radial-gradient(circle at 10% 0%, #F1ECDD 0%, transparent 45%),
+      radial-gradient(circle at 90% 10%, #EAF1E6 0%, transparent 40%),
+      var(--cream);
+    color:var(--ink);
+    line-height:1.6;
+    padding-bottom:80px;
+  }
+  header.hero{
+    padding:48px 20px 36px;
+    text-align:center;
+    background:linear-gradient(180deg, #F1ECDD 0%, var(--cream) 100%);
+    border-bottom:1px solid var(--line);
+  }
+  header.hero .tag{
+    display:inline-block;
+    background:var(--moss);
+    color:#fff;
+    padding:6px 16px;
+    border-radius:999px;
+    font-size:0.85rem;
+    letter-spacing:0.02em;
+    margin-bottom:14px;
+  }
+  header.hero h1{
+    font-size:2.1rem;
+    margin:0 0 8px;
+    color:var(--moss-dark);
+    font-weight:800;
+  }
+  header.hero p{
+    margin:0;
+    color:var(--ink-soft);
+    font-size:1.05rem;
+  }
+  .wrap{
+    max-width:760px;
+    margin:0 auto;
+    padding:0 18px;
+  }
+  .progress-bar{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(251,247,239,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+    padding:10px 18px;
+  }
+  .progress-inner{
+    max-width:760px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .progress-track{
+    flex:1;
+    height:10px;
+    background:#EDE7D8;
+    border-radius:999px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg, var(--moss), var(--sky));
+    border-radius:999px;
+    transition:width .25s ease;
+  }
+  .progress-text{
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    white-space:nowrap;
+    min-width:70px;
+    text-align:right;
+  }
+  .section-divider{
+    margin:40px 0 18px;
+    padding-top:8px;
+  }
+  .section-divider .num{
+    color:var(--clay-dark);
+    font-weight:700;
+    font-size:0.95rem;
+  }
+  .section-divider h2{
+    margin:2px 0 0;
+    font-size:1.3rem;
+    color:var(--moss-dark);
+    border-bottom:2px solid var(--line);
+    padding-bottom:10px;
+  }
+  .qcard{
+    background:var(--card);
+    border-radius:var(--radius);
+    padding:20px 22px;
+    margin-bottom:16px;
+    box-shadow:0 2px 10px rgba(63,90,63,0.06);
+    border:1px solid var(--line);
+  }
+  .qhead{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    margin-bottom:14px;
+  }
+  .qnum{
+    flex:none;
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    background:var(--moss);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:0.85rem;
+    font-weight:700;
+  }
+  .qtext{
+    font-size:1.03rem;
+    color:var(--ink);
+    padding-top:2px;
+  }
+  .hint{
+    display:block;
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    margin-top:2px;
+  }
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+  }
+  .opt{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:11px 14px;
+    border:1.5px solid var(--line);
+    border-radius:12px;
+    cursor:pointer;
+    transition:border-color .15s, background .15s;
+    background:#FEFDFB;
+  }
+  .opt:hover{ border-color:var(--sky); }
+  .opt.selected{
+    border-color:var(--moss);
+    background:#EEF4EC;
+  }
+  .opt input{ accent-color:var(--moss); width:18px; height:18px; flex:none; }
+  .opt span{ font-size:0.98rem; }
+  select.dropdown{
+    width:100%;
+    padding:11px 14px;
+    border-radius:12px;
+    border:1.5px solid var(--line);
+    background:#FEFDFB;
+    font-family:inherit;
+    font-size:0.98rem;
+    color:var(--ink);
+    appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B6E62' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+    background-repeat:no-repeat;
+    background-position:right 14px center;
+    background-size:16px;
+  }
+  select.dropdown:focus{ outline:2px solid var(--sky); border-color:var(--sky); }
+  .feedback{
+    margin-top:12px;
+    padding:10px 14px;
+    border-radius:10px;
+    font-size:0.92rem;
+    display:none;
+  }
+  .qcard.correct{ border-color:var(--good); background:var(--good-bg); }
+  .qcard.incorrect{ border-color:var(--bad); background:var(--bad-bg); }
+  .qcard.correct .feedback, .qcard.incorrect .feedback{ display:block; }
+  .qcard.correct .feedback{ color:var(--good); }
+  .qcard.incorrect .feedback{ color:var(--bad); }
+  .qcard.correct .opt.selected{ border-color:var(--good); background:#DEF0E1; }
+  .qcard.incorrect .opt.selected{ border-color:var(--bad); background:#F8DED6; }
+  .qcard.incorrect .opt.answer-correct{ border-color:var(--good); background:#DEF0E1; }
+
+  .submit-bar{
+    position:fixed;
+    left:0; right:0; bottom:0;
+    background:rgba(251,247,239,0.95);
+    backdrop-filter:blur(8px);
+    border-top:1px solid var(--line);
+    padding:14px 18px;
+    display:flex;
+    justify-content:center;
+    z-index:60;
+  }
+  .submit-btn{
+    background:var(--clay);
+    color:#fff;
+    border:none;
+    padding:14px 40px;
+    font-size:1.05rem;
+    font-weight:700;
+    border-radius:999px;
+    cursor:pointer;
+    box-shadow:0 4px 14px rgba(185,110,69,0.35);
+    transition:transform .12s, background .15s;
+  }
+  .submit-btn:hover{ background:var(--clay-dark); transform:translateY(-1px); }
+  .submit-btn:active{ transform:translateY(0); }
+
+  .result-panel{
+    background:linear-gradient(135deg, var(--moss) 0%, var(--moss-dark) 100%);
+    color:#fff;
+    border-radius:var(--radius);
+    padding:32px 26px;
+    text-align:center;
+    margin:24px 0 30px;
+    display:none;
+  }
+  .result-panel .score{
+    font-size:3rem;
+    font-weight:800;
+    margin:6px 0;
+  }
+  .result-panel p{ margin:4px 0; opacity:0.95; }
+  .result-panel .msg{ font-size:1.1rem; margin-top:10px; }
+  .jump-note{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:0.9rem;
+    margin-top:-10px;
+  }
+  footer{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:0.85rem;
+    margin-top:30px;
+  }
+  @media (max-width:480px){
+    header.hero h1{ font-size:1.5rem; }
+    .qcard{ padding:16px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="tag">เฉลยข้อสอบปลายภาค 1/2569</span>
+  <h1>วิชาสนุกกับวิทย์ — ชั้นประถมศึกษาปีที่ 3</h1>
+  <p>ปัจจัยในการดำรงชีวิตของมนุษย์และสัตว์ &nbsp;•&nbsp; วัสดุรอบตัวเรา</p>
+</header>
+
+<div class="progress-bar">
+  <div class="progress-inner">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0 / 0 ข้อ</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="result-panel" id="resultPanel">
+    <p>คะแนนของนักเรียน</p>
+    <div class="score" id="scoreText">0 / 0</div>
+    <p id="scorePercent"></p>
+    <p class="msg" id="scoreMsg"></p>
+  </div>
+  <p class="jump-note" id="jumpNote"></p>
+  <div id="quizRoot"></div>
+</div>
+
+<div class="submit-bar">
+  <button class="submit-btn" id="submitBtn">ส่งคำตอบ / ตรวจคะแนน</button>
+</div>
+
+<footer>ทำครบทุกข้อแล้วกดปุ่ม "ส่งคำตอบ" ด้านล่างเพื่อดูคะแนนและเฉลย</footer>
+
+<script>
+/* ============ QUIZ DATA ============ */
+// type: "mc" single choice | "multi" multiple choice (select all correct)
+// correct: index (mc) or array of indices (multi)
+const sections = [
+{
+  title: "ตอนที่ 1 — จับคู่ปัจจัยในการดำรงชีวิต",
+  intro: "นำข้อความด้านขวามือมาจับคู่ให้ตรงกับข้อความด้านซ้ายมือ",
+  questions: [
+    {prompt:"อากาศสะอาด", type:"mc",
+      options:["ปัจจัยที่ให้พลังงานและความอบอุ่น","ช่วยลำเลียงสารอาหารในร่างกาย","ป้องกันสมองขาดแก๊สออกซิเจน","สร้างภูมิต้านทานและควบคุมระบบร่างกาย","ส่งผลให้ร่างกายเจริญเติบโตสมวัย"], correct:2},
+    {prompt:"อาหารหลัก 5 หมู่", type:"mc",
+      options:["ปัจจัยที่ให้พลังงานและความอบอุ่น","ช่วยลำเลียงสารอาหารในร่างกาย","ป้องกันสมองขาดแก๊สออกซิเจน","สร้างภูมิต้านทานและควบคุมระบบร่างกาย","ส่งผลให้ร่างกายเจริญเติบโตสมวัย"], correct:4},
+    {prompt:"ข้าว แป้ง และไขมัน", type:"mc",
+      options:["ปัจจัยที่ให้พลังงานและความอบอุ่น","ช่วยลำเลียงสารอาหารในร่างกาย","ป้องกันสมองขาดแก๊สออกซิเจน","สร้างภูมิต้านทานและควบคุมระบบร่างกาย","ส่งผลให้ร่างกายเจริญเติบโตสมวัย"], correct:0},
+    {prompt:"น้ำสะอาด", type:"mc",
+      options:["ปัจจัยที่ให้พลังงานและความอบอุ่น","ช่วยลำเลียงสารอาหารในร่างกาย","ป้องกันสมองขาดแก๊สออกซิเจน","สร้างภูมิต้านทานและควบคุมระบบร่างกาย","ส่งผลให้ร่างกายเจริญเติบโตสมวัย"], correct:1},
+    {prompt:"วิตามินและเกลือแร่จากผักผลไม้", type:"mc",
+      options:["ปัจจัยที่ให้พลังงานและความอบอุ่น","ช่วยลำเลียงสารอาหารในร่างกาย","ป้องกันสมองขาดแก๊สออกซิเจน","สร้างภูมิต้านทานและควบคุมระบบร่างกาย","ส่งผลให้ร่างกายเจริญเติบโตสมวัย"], correct:3},
+  ]
+},
+{
+  title: "ตอนที่ 2 — จัดกลุ่มอาหารตามหมู่",
+  intro: "เลือกว่าอาหารแต่ละชนิดอยู่ในหมวดใด",
+  questions: (()=>{
+    const opts=["คาร์โบไฮเดรต","ไขมัน","โปรตีน","วิตามินจากผัก","วิตามินจากผลไม้"];
+    const data=[["แอปเปิ้ล",4],["ข้าว",0],["แครอท",3],["ปลา",2],["น้ำตาล",0],["กล้วย",4],
+      ["เนื้อหมู",2],["ส้ม",4],["เนย",1],["ไข่",2],["ขนมปัง",0],["ถั่ว",2],["ซีเรียล",0],
+      ["หัวหอม",3],["น้ำมันพืช",1],["องุ่น",4],["น้ำมันหมู",1],["กะหล่ำปลี",3]];
+    return data.map(d=>({prompt:d[0]+" จัดอยู่ในหมวดอาหารใด", type:"mc", options:opts, correct:d[1]}));
+  })()
+},
+{
+  title: "ตอนที่ 3 — ปัจจัยในการดำรงชีวิตของสัตว์",
+  intro: "ข้อความต่อไปนี้อธิบายถึงปัจจัยใด",
+  questions: [
+    {prompt:"“ช่วยให้ร่างกายเจริญเติบโต ซ่อมแซมส่วนที่สึกหรอ ให้พลังงาน” คือประโยชน์ของปัจจัยใด", type:"mc", options:["อาหาร","น้ำ","อากาศ"], correct:0},
+    {prompt:"“ช่วยปรับอุณหภูมิในร่างกาย ช่วยในระบบขับถ่าย ช่วยให้ผิวพรรณชุ่มชื้น” คือประโยชน์ของปัจจัยใด", type:"mc", options:["อาหาร","น้ำ","อากาศ"], correct:1},
+    {prompt:"“ช่วยหายใจ ใช้ในกระบวนการเผาผลาญพลังงาน” คือประโยชน์ของปัจจัยใด", type:"mc", options:["อาหาร","น้ำ","อากาศ"], correct:2},
+  ]
+},
+{
+  title: "ตอนที่ 4 — ถูกหรือผิด",
+  intro: "พิจารณาข้อความแล้วเลือกว่าถูกหรือผิด",
+  questions: [
+    {prompt:"1. อาหาร 5 หมู่ ได้แก่ วิตามิน ไขมัน เนื้อหมู น้ำตาล ผลไม้", type:"mc", options:["ถูก","ผิด"], correct:1},
+    {prompt:"2. ผักมีกากใยช่วยในการขับถ่าย", type:"mc", options:["ถูก","ผิด"], correct:0},
+    {prompt:"3. ใน 1 วัน ควรดื่มน้ำสะอาดประมาณ 1–2 แก้ว", type:"mc", options:["ถูก","ผิด"], correct:1},
+    {prompt:"4. เนื้อสัตว์ ไข่ นมและถั่ว ให้สารอาหารประเภทคาร์โบไฮเดรต", type:"mc", options:["ถูก","ผิด"], correct:1},
+    {prompt:"5. ปัจจัยที่จำเป็นต่อการดำรงชีวิตมี 3 อย่าง คือ น้ำ อาหาร อากาศ", type:"mc", options:["ถูก","ผิด"], correct:0},
+    {prompt:"6. ในอากาศมีแก๊สออกซิเจนซึ่งจำเป็นต่อการหายใจ", type:"mc", options:["ถูก","ผิด"], correct:0},
+    {prompt:"7. อาหารหมู่ที่ 4 คือสารอาหารจำพวกข้าว แป้งและน้ำตาล", type:"mc", options:["ถูก","ผิด"], correct:1},
+    {prompt:"8. หากไม่มีอากาศหายใจ เราจะตาย", type:"mc", options:["ถูก","ผิด"], correct:0},
+    {prompt:"9. หากเราขาดอากาศหายใจ 3–10 นาที อาจทำให้เสียชีวิต", type:"mc", options:["ถูก","ผิด"], correct:0},
+    {prompt:"10. น้ำเป็นส่วนประกอบหลักของเลือด", type:"mc", options:["ถูก","ผิด"], correct:0},
+  ]
+},
+{
+  title: "ตอนที่ 5 — เติมคำ (สารอาหาร)",
+  intro: "เลือกคำที่ถูกต้องเติมลงในช่องว่าง",
+  questions: [
+    {prompt:"ช่วยในการสร้างระบบภูมิคุ้มกันของร่างกาย ทำให้ร่างกายมีความต้านทานโรค และช่วยให้ระบบขับถ่ายทำงานได้สะดวก ได้แก่ ผักและผลไม้ต่างๆ คือสารอาหารประเภทใด", type:"mc",
+      options:["คาร์โบไฮเดรต","วิตามินและเกลือแร่จากผักและผลไม้","โปรตีน"], correct:1},
+    {prompt:"ช่วยในการเจริญเติบโตของร่างกายและซ่อมแซมส่วนที่สึกหรอ ได้แก่ เนื้อสัตว์ นม ไข่และถั่ว คือสารอาหารประเภทใด", type:"mc",
+      options:["คาร์โบไฮเดรต","วิตามินและเกลือแร่จากผักและผลไม้","โปรตีน"], correct:2},
+    {prompt:"เป็นแหล่งพลังงานหลักที่ร่างกายเลือกใช้ ได้แก่ ข้าว แป้ง เผือก มันและน้ำตาล คือสารอาหารประเภทใด", type:"mc",
+      options:["คาร์โบไฮเดรต","วิตามินและเกลือแร่จากผักและผลไม้","โปรตีน"], correct:0},
+  ]
+},
+{
+  title: "ตอนที่ 6 — อาหารหลัก 5 หมู่",
+  intro: "เติมข้อความลงในช่องว่างให้ถูกต้อง",
+  questions: [
+    {prompt:"อาหารหมู่ที่ 1 คือสารอาหารประเภทใด (ได้แก่ เนื้อ ไข่ ถั่วต่างๆ)", type:"mc", options:["โปรตีน","คาร์โบไฮเดรต","เกลือแร่","วิตามิน","ไขมัน"], correct:0},
+    {prompt:"อาหารหมู่ที่ 2 คือสารอาหารประเภทใด (ได้แก่ ข้าว แป้ง น้ำตาล เผือก มัน)", type:"mc", options:["โปรตีน","คาร์โบไฮเดรต","เกลือแร่","วิตามิน","ไขมัน"], correct:1},
+    {prompt:"อาหารหมู่ที่ 3 คือสารอาหารประเภทใด (ได้แก่ ผักต่างๆ เช่น คะน้า)", type:"mc", options:["โปรตีน","คาร์โบไฮเดรต","เกลือแร่","วิตามิน","ไขมัน"], correct:2},
+    {prompt:"อาหารหมู่ที่ 4 คือสารอาหารประเภทใด (ได้แก่ ผลไม้ต่างๆ เช่น ทุเรียน)", type:"mc", options:["โปรตีน","คาร์โบไฮเดรต","เกลือแร่","วิตามิน","ไขมัน"], correct:3},
+    {prompt:"อาหารหมู่ที่ 5 คือสารอาหารประเภทใด (ได้แก่ น้ำมันจากสัตว์)", type:"mc", options:["โปรตีน","คาร์โบไฮเดรต","เกลือแร่","วิตามิน","ไขมัน"], correct:4},
+    {prompt:"เสริมสร้างกล้ามเนื้อและกระดูก ทำให้ร่างกายเจริญเติบโต ช่วยซ่อมแซมส่วนที่สึกหรอ คืออาหารหมู่ที่เท่าไร", type:"mc", options:["หมู่ที่ 1","หมู่ที่ 2","หมู่ที่ 3","หมู่ที่ 4","หมู่ที่ 5"], correct:0},
+    {prompt:"เป็นแหล่งพลังงานและให้ความอบอุ่นแก่ร่างกาย คืออาหารหมู่ใดบ้าง (เลือก 2 ข้อ)", type:"multi", options:["หมู่ที่ 1","หมู่ที่ 2","หมู่ที่ 3","หมู่ที่ 4","หมู่ที่ 5"], correct:[1,4]},
+    {prompt:"ช่วยสร้างภูมิต้านทานโรค ทำให้ระบบอวัยวะต่างๆ ทำงานได้ตามปกติ คืออาหารหมู่ใดบ้าง (เลือก 2 ข้อ)", type:"multi", options:["หมู่ที่ 1","หมู่ที่ 2","หมู่ที่ 3","หมู่ที่ 4","หมู่ที่ 5"], correct:[2,3]},
+    {prompt:"ร่างกายของเราประกอบด้วยน้ำเป็นสัดส่วนเท่าไรของร่างกาย (ตัวเศษ)", type:"mc", options:["1","2","3","4"], correct:2},
+    {prompt:"ร่างกายของเราประกอบด้วยน้ำ 3 ใน กี่ส่วนของร่างกาย (ตัวส่วน)", type:"mc", options:["2","3","4","5"], correct:2},
+    {prompt:"น้ำช่วยให้ร่างกายทำงานได้ปกติ ช่วยลำเลียงและช่วยขับสิ่งใด (เลือกให้ครบ)", type:"multi",
+      options:["สารอาหาร","ขับถ่ายของเสีย","แก๊สออกซิเจน","ฮอร์โมน"], correct:[0,1]},
+  ]
+},
+{
+  title: "ตอนที่ 7 — ปัจจัยการดำรงชีวิตของสัตว์ (รูปบัวรดน้ำ)",
+  intro: "เลือกคำเติมในช่องว่างให้ถูกต้อง (น้ำ / อากาศ / อาหาร)",
+  questions: [
+    {prompt:"ปัจจัยที่จำเป็นต่อการดำรงชีวิตของสัตว์มี 3 อย่าง ได้แก่อะไรบ้าง (เลือกให้ครบ 3 ข้อ)", type:"multi", options:["น้ำ","อากาศ","อาหาร","แสงแดด"], correct:[0,1,2]},
+    {prompt:"สัตว์กิน ___ เพื่อเป็นอาหาร ดับร้อน และเป็นส่วนประกอบหลักของเลือด", type:"mc", options:["น้ำ","อากาศ","อาหาร"], correct:0},
+    {prompt:"___ เป็นที่อยู่อาศัยของปลาและสัตว์น้ำหลายๆ ชนิด", type:"mc", options:["น้ำ","อากาศ","อาหาร"], correct:0},
+    {prompt:"ถ้าไม่มี ___ ในการหายใจ สัตว์จะตาย", type:"mc", options:["น้ำ","อากาศ","อาหาร"], correct:1},
+    {prompt:"ปลาโผล่ขึ้นมาหายใจเอา ___ บนผิวน้ำ", type:"mc", options:["น้ำ","อากาศ","อาหาร"], correct:1},
+    {prompt:"สุนัขและแมวหายใจสูด ___ ทางจมูก", type:"mc", options:["น้ำ","อากาศ","อาหาร"], correct:1},
+    {prompt:"สัตว์กิน ___ เพื่อให้ร่างกายเจริญเติบโต", type:"mc", options:["น้ำ","อากาศ","อาหาร"], correct:2},
+  ]
+},
+{
+  title: "ตอนที่ 8 — เรื่องปลากับการดำรงชีวิตในน้ำ",
+  intro: "อ่านข้อความแล้วเลือกคำเติมในช่องว่างให้ถูกต้อง",
+  questions: (()=>{
+    const opts=["การหายใจ","แก๊สออกซิเจน","นำน้ำเข้าสู่ร่างกาย","การดำรงชีวิต","อาหาร","สัตว์น้ำขนาดเล็ก"];
+    return [
+      {prompt:"ปากของปลาจะอ้าและหุบตลอดเวลาเพื่อ ___", type:"mc", options:opts, correct:0},
+      {prompt:"ในน้ำจะมี ___ อยู่ เมื่อน้ำไหลผ่านเหงือก เหงือกจะทำหน้าที่กรองสิ่งนี้จากน้ำ", type:"mc", options:opts, correct:1},
+      {prompt:"เหงือกทำให้ปลาได้รับทั้งน้ำและ ___", type:"mc", options:opts, correct:2},
+      {prompt:"สิ่งที่จำเป็นต่อการเจริญเติบโตและ ___ ของปลา", type:"mc", options:opts, correct:3},
+      {prompt:"นอกจากนี้ปลายังต้องการ ___ เพื่อให้ร่างกายเจริญเติบโต", type:"mc", options:opts, correct:4},
+      {prompt:"ปลาหางนกยูงจะกิน ___", type:"mc", options:opts, correct:5},
+    ];
+  })()
+},
+{
+  title: "ตอนที่ 9 — ปัจจัยในการดำรงชีวิตของมนุษย์และสัตว์ (บทความยาว)",
+  intro: "เลือกคำที่ถูกต้องที่สุดเติมลงในช่องว่างแต่ละข้อ",
+  questions: (()=>{
+    const opts=["อากาศ","บนบก","การหายใจ","แก๊สออกซิเจน","ในน้ำ","มนุษย์","เสียชีวิต","อาหาร","สืบพันธุ์","พลังงาน","ปกติ","การดำรงชีวิต","สุขภาพแข็งแรง","วัฏจักรชีวิตของสัตว์","กระบวนการต่างๆ","เฉพาะตัวและแตกต่างกัน","ปลา กุ้ง หอย","อากาศที่อยู่รอบตัวเรา","ปัจจัยในการดำรงชีวิตของมนุษย์และสัตว์"];
+    const items=[
+      ["สัตว์ต้องการอากาศ น้ำ และอาหาร เพื่อใช้ในการ ___", 11],
+      ["ทั้ง 3 สิ่งนี้จัดเป็น ___", 18],
+      ["มนุษย์และสัตว์ทุกชนิดต้องการอากาศใน ___ เพื่อให้ดำรงชีวิตอยู่ได้", 2],
+      ["ถ้าไม่มีอากาศหายใจ มนุษย์และสัตว์ต่างๆ จะ ___", 6],
+      ["สัตว์ที่อาศัยอยู่ ___ เช่น สุนัข แมว วัว ม้า ช้าง เป็ด ไก่", 1],
+      ["สัตว์บกจะหายใจโดยใช้แก๊สออกซิเจนใน ___", 17],
+      ["สัตว์ที่อาศัยอยู่ ___ เช่น ปลา กุ้ง หอย", 4],
+      ["สัตว์น้ำจะได้รับ ___ ที่อยู่ในน้ำ", 3],
+      ["สัตว์ดื่มน้ำเพื่อใช้ในกระบวนการต่างๆของร่างกาย ทำให้ระบบต่างๆทำงานเป็น ___", 10],
+      ["สัตว์ต้องการอาหารเพื่อให้ ___ แก่ร่างกาย ช่วยให้ร่างกายเจริญเติบโต", 9],
+      ["อาหารช่วยให้ร่างกายเจริญเติบโตและมี ___", 12],
+      ["มนุษย์และสัตว์เมื่อถึงระยะตัวเต็มวัยจะสามารถ ___ ให้กำเนิดลูก", 8],
+      ["การมีลูกหมุนเวียนต่อเนื่องเรียกว่า ___", 13],
+      ["สัตว์แต่ละชนิด เช่น ผีเสื้อ กบ ไก่ มนุษย์ จะมีวัฏจักรชีวิตที่ ___", 15],
+    ];
+    return items.map(it=>({prompt:it[0], type:"mc", options:opts, correct:it[1]}));
+  })()
+},
+{
+  title: "ตอนที่ 10 — จัดกลุ่มสัตว์ตามอาหารที่กิน",
+  intro: "เลือกว่าสัตว์แต่ละชนิดกินอาหารประเภทใด",
+  questions: (()=>{
+    const opts=["สัตว์กินพืช","สัตว์กินเนื้อ","สัตว์กินทั้งพืชและสัตว์"];
+    const data=[["งู",1],["หมู",2],["นก",2],["เสือ",1],["กระบือ",0],["สุนัข",2],
+      ["ม้าลาย",0],["ฉลาม",1],["วัว",0],["ไก่",2],["แมว",2],["ม้า",0]];
+    return data.map(d=>({prompt:d[0]+" เป็นสัตว์ประเภทใด", type:"mc", options:opts, correct:d[1]}));
+  })()
+},
+{
+  title: "ตอนที่ 11 — เลือกคำตอบที่ถูกต้องที่สุด",
+  intro: "เลือกคำตอบที่ถูกต้องที่สุดเพียงคำตอบเดียว",
+  questions: [
+    {prompt:"1. พิจารณาข้อมูล: 1.น้ำ 2.อากาศ 3.อาหาร ข้อมูลใดบ้างที่จำเป็นต่อการดำรงชีวิตของมนุษย์", type:"mc", options:["1, 2","1, 3","2, 3","1, 2, 3"], correct:3},
+    {prompt:"2. ปัจจัยพื้นฐานที่จำเป็นต่อการดำรงชีวิตและเติบโตของมนุษย์มีกี่ประการ", type:"mc", options:["2 ประการ","3 ประการ","4 ประการ","5 ประการ"], correct:1},
+    {prompt:"3. ใครรับประทานอาหารได้เหมาะสมที่สุด", type:"mc",
+      options:["ด.ญ.นิด รับประทานโดนัททุกวัน","ด.ช.ไม้ รับประทานอาหารที่มีไข่เป็นส่วนประกอบทุกวัน","ด.ญ.จอย รับประทานอาหารที่ผ่านการทอดทุกมื้อ","ด.ช.บอส รับประทานเฉพาะผักและผลไม้ทุกมื้อ"], correct:1},
+    {prompt:"4. อาหารในข้อใดมีสารอาหารแตกต่างจากพวกมากที่สุด", type:"mc", options:["ถั่ว","นม","ผลไม้","เนื้อสัตว์"], correct:2},
+    {prompt:"5. อ้อยไม่ชอบรับประทานผัก จะเกิดผลอย่างไร", type:"mc",
+      options:["มีโอกาสขาดวิตามินและเกลือแร่","ร่างกายจะไม่เจริญเติบโต","สติปัญญาต่ำกว่าเด็กคนอื่น","พัฒนาการช้ากว่าเด็กคนอื่น"], correct:0},
+    {prompt:"6. เพราะเหตุใดเราจึงต้องดื่มน้ำเป็นประจำวัน", type:"mc",
+      options:["น้ำเป็นส่วนประกอบของร่างกาย","น้ำช่วยให้ร่างกายขับถ่ายของเสีย","น้ำช่วยลำเลียงสารต่างๆ ในร่างกาย","ถูกทุกข้อ"], correct:3},
+    {prompt:"7. หลังการทำกิจกรรมในข้อใดควรดื่มน้ำ", type:"mc", options:["ออกกำลังกาย","นอนหลับ","ขับถ่าย","อ่านหนังสือ"], correct:0},
+    {prompt:"8. ข้อใดกล่าวได้ถูกต้อง", type:"mc",
+      options:["ในอากาศมีปริมาณแก๊สออกซิเจนมากที่สุด","ร่างกายมนุษย์ต้องการใช้แก๊สทุกชนิดที่อยู่ในอากาศ","แก๊สคาร์บอนไดออกไซด์ช่วยในการเจริญเติบโตของมนุษย์","มนุษย์ต้องการแก๊สออกซิเจนจากการหายใจ"], correct:3},
+    {prompt:"9. บริเวณใดที่มีอากาศบริสุทธิ์มากที่สุด", type:"mc", options:["สวนสาธารณะ","ริมถนนใหญ่","โรงงานอุตสาหกรรม","ตลาด"], correct:0},
+    {prompt:"10. สัตว์ในข้อใดกินอาหารแตกต่างจากข้ออื่น", type:"mc", options:["วัว","ควาย","เสือ","ม้า"], correct:2},
+    {prompt:"11. ข้อใดกล่าวไม่ถูกต้อง", type:"mc",
+      options:["มนุษย์และสัตว์ต้องการน้ำในปริมาณที่เท่ากันในแต่ละวัน","สิ่งมีชีวิตหากขาดอาหารเป็นเวลานานจะไม่สามารถดำรงชีวิตได้","พืชและสัตว์มีการหายใจเพื่อดำรงชีวิต","สัตว์น้ำหายใจเอาแก๊สออกซิเจนที่ละลายอยู่ในน้ำมาใช้"], correct:0},
+    {prompt:"12. ข้อใดคือประโยชน์หลักของ “น้ำ” ต่อร่างกายมนุษย์", type:"mc",
+      options:["ช่วยสร้างภูมิต้านทานโรค","ช่วยปรับสมดุลและควบคุมอุณหภูมิในร่างกาย","ช่วยให้ร่างกายอบอุ่นแทนเสื้อผ้า","ให้พลังงานสูงแก่ร่างกาย"], correct:1},
+    {prompt:"13. หากเราต้องการพลังงานในการวิ่งเล่น ควรเลือกรับประทานอาหารกลุ่มใดเป็นหลัก", type:"mc",
+      options:["เนื้อ นม ไข่","ข้าว แป้ง น้ำตาล","ผักใบเขียว","ผลไม้รสเปรี้ยว"], correct:1},
+    {prompt:"14. พฤติกรรมการรับประทานอาหารในข้อใดส่งผลเสียต่อการดำรงชีวิต", type:"mc",
+      options:["ดื่มนมทุกวันก่อนนอน","รับประทานอาหารครบ 5 หมู่","ทานแต่ขนมขบเคี้ยวแทนข้าวเย็น","ทานผักและผลไม้เป็นประจำ"], correct:2},
+    {prompt:"15. อาหารหมู่ใดช่วยเสริมสร้างการเจริญเติบโตของร่างกาย", type:"mc", options:["ข้าว","เนื้อสัตว์","น้ำมัน","น้ำตาล"], correct:1},
+    {prompt:"16. ข้าวอยู่ในอาหารหลักหมู่ใด", type:"mc", options:["หมู่ที่ 1","หมู่ที่ 2","หมู่ที่ 3","หมู่ที่ 5"], correct:1},
+    {prompt:"17. อาหารหมู่ที่ 2 ได้แก่ข้อใด", type:"mc", options:["ผัก","ผลไม้","เนื้อสัตว์ ไข่ นม","ข้าวและแป้ง"], correct:3},
+    {prompt:"18. ส้มจัดอยู่ในอาหารหมู่ใด", type:"mc", options:["ผลไม้","ผัก","เนื้อสัตว์","ไขมัน"], correct:0},
+    {prompt:"19. ผักมีประโยชน์อย่างไร", type:"mc", options:["ให้พลังงานมาก","ช่วยให้ร่างกายแข็งแรงและขับถ่ายดี","ทำให้ง่วงนอน","ทำให้ตัวสูงทันที"], correct:1},
+    {prompt:"20. อาหารหมู่ใดให้พลังงานแก่ร่างกาย", type:"mc", options:["ข้าว แป้ง น้ำตาล","ผัก","ผลไม้","น้ำเปล่า"], correct:0},
+    {prompt:"21. ไข่ไก่อยู่ในอาหารหมู่ใด", type:"mc", options:["หมู่ที่ 1","หมู่ที่ 2","หมู่ที่ 4","หมู่ที่ 5"], correct:0},
+    {prompt:"22. หากต้องการวิตามิน ควรกินอาหารประเภทใด", type:"mc", options:["ผักและผลไม้","เนื้อสัตว์","น้ำมัน","ขนมหวาน"], correct:0},
+    {prompt:"23. นมจัดอยู่ในอาหารหมู่ใด", type:"mc", options:["หมู่ที่ 1","หมู่ที่ 2","หมู่ที่ 3","หมู่ที่ 5"], correct:0},
+    {prompt:"24. อาหารหมู่ที่ 5 คือข้อใด", type:"mc", options:["ข้าว","ผัก","ไขมันและน้ำมัน","ผลไม้"], correct:2},
+    {prompt:"25. ข้อใดเป็นอาหารที่ควรกินในปริมาณน้อย", type:"mc", options:["ผัก","ผลไม้","ไขมันและน้ำมัน","นม"], correct:2},
+    {prompt:"26. การรับประทานอาหารครบ 5 หมู่ช่วยให้เกิดผลอย่างไร", type:"mc",
+      options:["ทำให้ร่างกายแข็งแรงเจริญเติบโต","ทำให้อ้วนขึ้นอย่างรวดเร็ว","ไม่มีผลต่อร่างกาย","ทำให้ป่วยง่ายขึ้น"], correct:0},
+  ]
+},
+{
+  title: "ตอนที่ 12 — วัสดุรอบตัวเรา",
+  intro: "บอกว่าของแต่ละอย่างทำมาจากวัสดุอะไร",
+  questions: (()=>{
+    const opts=["ไม้","ยาง","แก้ว","พลาสติก","ผ้า","เยื่อไม้ / กระดาษ"];
+    const data=[["ประตู",0],["ยางรถยนต์",1],["แก้วน้ำ",2],["หลอดดูดน้ำ",3],
+      ["สมุด",5],["ยางลบ",1],["เสื้อ",4],["โต๊ะ/เก้าอี้",0],["ขวดน้ำ",3]];
+    return data.map(d=>({prompt:d[0]+" ทำมาจากวัสดุใด", type:"mc", options:opts, correct:d[1]}));
+  })()
+},
+{
+  title: "ตอนที่ 13 — สมบัติอะไรเอ่ย?",
+  intro: "อ่านคุณสมบัติแล้วทายว่าคือวัสดุอะไร",
+  questions: [
+    {prompt:"น้ำหนักเบา ดูดซับน้ำได้ง่าย เหมาะสำหรับการเขียน เสื่อมสภาพเร็วเมื่อเจอความชื้น ไม่นำความร้อนและไฟฟ้า — ฉันคือ?", type:"mc", options:["กระดาษ","แก้ว","พลาสติก","หิน"], correct:0},
+    {prompt:"ใสและเปราะบาง ทนความร้อนสูงในบางชนิด ไม่ดูดซับน้ำหรือสารเคมี แตกหักง่าย — ฉันคือ?", type:"mc", options:["กระดาษ","แก้ว","พลาสติก","หิน"], correct:1},
+    {prompt:"น้ำหนักเบา ไม่ทนต่อความร้อนสูงๆ ไม่ดูดซับน้ำ ย่อยสลายได้ยาก ไม่นำความร้อนและไฟฟ้า — ฉันคือ?", type:"mc", options:["กระดาษ","แก้ว","พลาสติก","หิน"], correct:2},
+    {prompt:"แข็งและทนทานมาก ทนต่อความร้อนและแรงกด หนักและไม่ยืดหยุ่น ไม่นำไฟฟ้า — ฉันคือ?", type:"mc", options:["กระดาษ","แก้ว","พลาสติก","หิน"], correct:3},
+  ]
+},
+{
+  title: "ตอนที่ 14 — วิเคราะห์วัสดุของรถยนต์",
+  intro: "พิจารณาคุณสมบัติของชิ้นส่วนแต่ละจุดของรถยนต์",
+  questions: [
+    {prompt:"ชิ้นส่วนที่มีคุณสมบัติ “โปร่งใส แตกหักง่าย” (เช่น กระจกรถ) ทำจากวัสดุใด", type:"mc", options:["แก้ว","ยาง","โลหะ"], correct:0},
+    {prompt:"ชิ้นส่วนที่มีคุณสมบัติ “ยืดหยุ่นได้ดี เหนียว ไม่ยอมให้น้ำซึมผ่าน” (เช่น ยางรถ) ทำจากวัสดุใด", type:"mc", options:["แก้ว","ยาง","โลหะ"], correct:1},
+    {prompt:"ชิ้นส่วนที่มีคุณสมบัติ “แข็งแรงทนทาน นำความร้อน นำไฟฟ้าได้ดี” (เช่น ตัวถังรถ) ทำจากวัสดุใด", type:"mc", options:["แก้ว","ยาง","โลหะ"], correct:2},
+  ]
+},
+{
+  title: "ตอนที่ 15 — การเปลี่ยนแปลงของวัตถุ (ไอศกรีม น้ำ ขนมปัง ไข่)",
+  intro: "เติมคำอธิบายการเปลี่ยนแปลงของวัตถุแต่ละชนิด",
+  questions: [
+    {prompt:"เมื่อไอศกรีมได้รับ ___ จะทำให้ไอศกรีมละลาย", type:"mc", options:["ความร้อน","ความเย็น"], correct:0},
+    {prompt:"เมื่อไอศกรีมได้รับความร้อน ไอศกรีมจะเป็นอย่างไร", type:"mc", options:["ละลาย","แข็งตัว"], correct:0},
+    {prompt:"การเปลี่ยนสถานะของไอศกรีมเมื่อได้รับความร้อนเป็นแบบใด", type:"mc", options:["ของแข็ง → ของเหลว","ของเหลว → ของแข็ง","ของแข็ง → แก๊ส"], correct:0},
+    {prompt:"เมื่อน้ำได้รับ ___ จะทำให้น้ำแข็งตัว", type:"mc", options:["ความร้อน","ความเย็น"], correct:1},
+    {prompt:"เมื่อน้ำได้รับความเย็น น้ำจะเป็นอย่างไร", type:"mc", options:["แข็งตัว","ละลาย"], correct:0},
+    {prompt:"การเปลี่ยนสถานะของน้ำเมื่อได้รับความเย็นเป็นแบบใด", type:"mc", options:["ของเหลว → ของแข็ง","ของแข็ง → ของเหลว","ของเหลว → แก๊ส"], correct:0},
+    {prompt:"เมื่อนวดแป้งขนมปังและนำเข้าเตาอบ ขนมปังเปลี่ยนสถานะโดยได้รับสิ่งใดจากเตาอบ", type:"mc", options:["ความร้อน","ความเย็น"], correct:0},
+    {prompt:"เมื่อขนมปังได้รับความร้อนจากเตาอบแล้ว ขนมปังจะเป็นอย่างไร", type:"mc",
+      options:["สุกเปลี่ยนเป็นสีน้ำตาล มีความฟูและนุ่มขึ้น","ยังคงเป็นแป้งดิบเหมือนเดิม","เปลี่ยนเป็นสีขาวแข็งกรอบ"], correct:0},
+    {prompt:"เมื่อนำไข่ดิบไปได้รับความร้อน จะเกิดการเปลี่ยนแปลงอย่างไรบ้าง (เลือกได้มากกว่า 1 ข้อ)", type:"multi",
+      options:["สุก","แข็งขึ้น","เปลี่ยนสี","ยังคงเหลวเหมือนเดิม"], correct:[0,1,2]},
+  ]
+},
+{
+  title: "ตอนที่ 16 — ร้อนขึ้นหรือเย็นลง เกิดอะไรขึ้น",
+  intro: "เลือกคำตอบที่ถูกต้องเมื่อวัตถุแต่ละชนิดได้รับความร้อนหรือความเย็น",
+  questions: [
+    {prompt:"น้ำแข็ง เมื่อทำให้ร้อนขึ้นจะเป็นอย่างไร", type:"mc", options:["หลอมเหลวเป็นน้ำ","ไม่เปลี่ยนแปลง","ระเหิดกลายเป็นไอทันที"], correct:0},
+    {prompt:"น้ำแข็ง เมื่อทำให้เย็นลงจะเป็นอย่างไร", type:"mc", options:["ยังคงเป็นของแข็งเหมือนเดิม","หลอมเหลวเป็นน้ำ","กลายเป็นแก๊ส"], correct:0},
+    {prompt:"ทองคำ เมื่อทำให้ร้อนขึ้นมากๆ จะเป็นอย่างไร", type:"mc", options:["หลอมเหลวเป็นของเหลว","ไม่เปลี่ยนแปลง","ระเหิดหายไป"], correct:0},
+    {prompt:"ทองคำ เมื่อทำให้เย็นลงจะเป็นอย่างไร", type:"mc", options:["ไม่เปลี่ยนสถานะ ยังเป็นของแข็งเหมือนเดิม","หลอมเหลว","กลายเป็นแก๊ส"], correct:0},
+    {prompt:"ขนมวุ้น เมื่อทำให้ร้อนขึ้น (ผสมน้ำ) จะเป็นอย่างไร", type:"mc", options:["เกิดการหลอมเหลว","แข็งตัวขึ้น","ไม่เปลี่ยนแปลง"], correct:0},
+    {prompt:"ขนมวุ้น เมื่อทำให้เย็นลงจะเป็นอย่างไร", type:"mc", options:["กลับเป็นของแข็งเหมือนเดิม","ยังคงเป็นของเหลว","ระเหยไป"], correct:0},
+    {prompt:"ไอศกรีม เมื่อทำให้ร้อนขึ้นจะเป็นอย่างไร", type:"mc", options:["ละลายเป็นของเหลว","แข็งตัวขึ้น","ไม่เปลี่ยนแปลง"], correct:0},
+    {prompt:"ไอศกรีม เมื่อทำให้เย็นลงจะเป็นอย่างไร", type:"mc", options:["กลับเป็นของแข็งเหมือนเดิม","ยังคงเป็นของเหลว","ระเหยไป"], correct:0},
+    {prompt:"เทียน (หล่อเทียน) เมื่อทำให้ร้อนขึ้นจะเป็นอย่างไร", type:"mc", options:["เกิดการหลอมเหลว","แข็งตัวขึ้น","ไม่เปลี่ยนแปลง"], correct:0},
+    {prompt:"เทียน (หล่อเทียน) เมื่อทำให้เย็นลงจะเป็นอย่างไร", type:"mc", options:["เปลี่ยนเป็นของแข็ง","ยังคงเป็นของเหลว","ระเหยไป"], correct:0},
+  ]
+},
+{
+  title: "ตอนที่ 17 — ตารางทดสอบความแข็ง และคำถามวัสดุ",
+  intro: "จากการทดลองขูดวัตถุ A, B, C พบว่า A ขูด B, C ไม่เป็นรอย / B ขูด A เป็นรอย แต่ขูด C ไม่เป็นรอย / C ขูด A, B เป็นรอยทั้งคู่",
+  questions: [
+    {prompt:"1. จงเรียงลำดับความแข็งแรงของวัตถุจากมากไปน้อย", type:"mc", options:["C - B - A","A - B - C","B - A - C","A - C - B"], correct:0},
+    {prompt:"2. ทำไมอาคารสูงๆ บนถนนสีลมจึงนิยมใช้แก้วทำหน้าต่าง", type:"mc",
+      options:["เพราะแก้วมีคุณสมบัติโปร่งใส ทำให้ภายในห้องสว่าง","เพราะแก้วราคาถูกที่สุด","เพราะแก้วมีน้ำหนักเบาที่สุด","เพราะแก้วไม่มีวันแตก"], correct:0},
+    {prompt:"3. ไม้มีคุณสมบัติใด จึงนิยมนำมาทำเครื่องเรือนหรือสร้างบ้าน", type:"mc",
+      options:["มีลวดลายในตัว มีความทนทานแข็งแรง","นำไฟฟ้าได้ดี","โปร่งใสมองทะลุได้","ละลายง่ายเมื่อเจอน้ำ"], correct:0},
+    {prompt:"4. หากบ้านของนักเรียนมีฝนตกทุกวัน นักเรียนจะทำกล้วยตากได้หรือไม่", type:"mc",
+      options:["ทำได้ โดยใช้ตู้อบแทนแสงแดด","ทำไม่ได้เลยไม่ว่ากรณีใด","ต้องรอให้ถึงฤดูร้อนเท่านั้น","ใช้แสงจันทร์ตากแทนได้"], correct:0},
+    {prompt:"5. การเผาขยะและการจุดพลุ เป็นการทำให้วัสดุร้อนขึ้นหรือเย็นลง และมีผลกระทบต่อสุขภาพอย่างไร", type:"mc",
+      options:["ทำให้วัสดุร้อนขึ้น และเป็นอันตรายต่อระบบทางเดินหายใจ","ทำให้วัสดุเย็นลง และไม่มีอันตรายใดๆ","ทำให้วัสดุร้อนขึ้น แต่ไม่มีผลกระทบใดๆ","ทำให้วัสดุเย็นลง และเป็นอันตรายต่อผิวหนัง"], correct:0},
+    {prompt:"6. พลาสติกที่นิยมทำเป็นภาชนะใส่อาหาร เพราะเหตุใดจึงไม่ควรนำมาใส่อาหารที่ร้อนจัด", type:"mc",
+      options:["เพราะสารที่เคลือบพลาสติกอาจละลายปนไปกับอาหาร","เพราะพลาสติกจะละลายหมดทั้งชิ้นทันที","เพราะจะทำให้อาหารเย็นตัวเร็วขึ้น","ไม่มีเหตุผลพิเศษ ใส่ได้ตามปกติ"], correct:0},
+    {prompt:"7. ถ้าเรานำเนยแข็งไปวางไว้กลางแดด จะเกิดอะไรขึ้น", type:"mc",
+      options:["เนยแข็งจะเกิดการละลาย","เนยแข็งจะแข็งตัวขึ้น","เนยแข็งจะไม่เปลี่ยนแปลง","เนยแข็งจะระเหิดหายไป"], correct:0},
+  ]
+},
+{
+  title: "ตอนที่ 18 — ชิ้นส่วนย่อย A และ B",
+  intro: "ชิ้นส่วนย่อย A เป็นเส้นยาวอ่อนนุ่ม ส่วนชิ้นส่วนย่อย B เป็นก้อนแข็งน้ำหนักมาก",
+  questions: [
+    {prompt:"1. เราสามารถนำชิ้นส่วนย่อย A ไปประกอบเป็นอะไรได้บ้าง", type:"mc",
+      options:["เส้นใย นำไปทำเครื่องนุ่งห่มได้","ก้อนหิน นำไปปูพื้นได้","แผ่นโลหะ","ไม่สามารถนำไปใช้ประโยชน์อะไรได้"], correct:0},
+    {prompt:"2. เราสามารถนำชิ้นส่วนย่อย B ไปประกอบเป็นอะไรได้บ้าง", type:"mc",
+      options:["ปูพื้นถนน ตกแต่งสวน","ทอเป็นผ้า","ทำเป็นเชือก","ไม่สามารถนำไปใช้ประโยชน์อะไรได้"], correct:0},
+    {prompt:"3. เมื่อนำช้อน A และช้อน B แช่ในน้ำร้อน พบว่าช้อน B ร้อนขึ้น แต่ช้อน A ไม่ร้อน ช้อน A และช้อน B ทำจากวัสดุใด", type:"mc",
+      options:["ช้อน A เป็นพลาสติก ช้อน B เป็นโลหะ","ช้อน A เป็นโลหะ ช้อน B เป็นพลาสติก","ทั้งคู่เป็นโลหะ","ทั้งคู่เป็นพลาสติก"], correct:0},
+  ]
+},
+{
+  title: "ตอนที่ 19 — เลือกข้อที่ถูกต้อง",
+  intro: "พิจารณาแล้วเลือกคำตอบที่ถูกต้อง",
+  questions: [
+    {prompt:"1. ข้อใดเป็นวัสดุที่มีคุณสมบัติดูดซับน้ำได้ทั้งหมด", type:"mc",
+      options:["กล่องพลาสติกและถุงพลาสติก","ไม้บรรทัดพลาสติก","ถุงเท้าผ้า"], correct:2},
+    {prompt:"2. ถ้าหากนักเรียนทำน้ำหกที่โต๊ะไม้ นักเรียนควรใช้สิ่งใดซับน้ำ", type:"mc",
+      options:["กระดาษทิชชู่","ฟองน้ำ","ผ้าเช็ดโต๊ะ"], correct:0},
+    {prompt:"3. ข้อใดไม่ได้ทำมาจากหินและดิน", type:"mc", options:["ครก","ถนน","กระทะ"], correct:2},
+    {prompt:"4. แก้วมัคลายดอกไม้ในภาพ ทำมาจากวัสดุอะไร", type:"mc", options:["เซรามิก","กระจก","เหล็ก"], correct:0},
+    {prompt:"5. วันนี้ฝนตกหนักมาก พลอยใสยังอยู่ที่โรงเรียนและลืมนำร่มมา พลอยใสควรใช้อะไรทดแทนร่มได้", type:"mc",
+      options:["กระดาษหนังสือพิมพ์","ถุงพลาสติก","ลังกระดาษ"], correct:1},
+    {prompt:"6. วัตถุในข้อใดที่ทำมาจากวัสดุเพียงชนิดเดียวกันในแต่ละชิ้น", type:"mc",
+      options:["นาฬิกา โทรศัพท์","บัวรดน้ำ ผ้าเช็ดตัว","แว่นตา ลูกขนไก่","ลูกกุญแจ ปากกา"], correct:1},
+    {prompt:"7. สิ่งของข้อใดทำมาจากวัสดุหลายชนิด", type:"mc",
+      options:["สายยาง กระเป๋าผ้า","ลูกกุญแจ แม่กุญแจ","พัดลม โทรศัพท์","กระถางดินเผา โอ่งดินเผา"], correct:2},
+    {prompt:"8. ข้อใดเป็นการเปลี่ยนแปลงของวัสดุที่เกิดจากการให้ความเย็นแก่วัสดุ", type:"mc",
+      options:["น้ำอัดลม - ไอศกรีมหลอด","กล้วย - กล้วยบวชชี","ไม้ - ถ่านไม้","ส้ม - น้ำส้ม"], correct:0},
+    {prompt:"9. จากภาพกระทะทำอาหาร ทำมาจากวัสดุอะไร", type:"mc",
+      options:["ไม้และโลหะ","ไม้และพลาสติก","โลหะและพลาสติก","ไม้ โลหะ และพลาสติก"], correct:2},
+    {prompt:"10. การเปลี่ยนแปลงของวัสดุในข้อใดเกิดจากการให้ความร้อน", type:"mc",
+      options:["ข้าวโพด - ข้าวโพดคั่ว","ทุเรียน - ไอศกรีมทุเรียน","กะทิ - ไอศกรีมกะทิ","น้ำ - น้ำแข็ง"], correct:0},
+    {prompt:"11. ข้อใดกล่าวถูกต้อง", type:"mc",
+      options:["ไข่ดาวยังมีสมบัติของไข่สดอยู่","น้ำมีสมบัติเปลี่ยนไปเมื่อได้รับความเย็น","กระดาษเมื่อถูกเผาไหม้จะเปลี่ยนเป็นผงสีดำ","เทียนไขมีสมบัติเปลี่ยนไปเมื่อได้รับความร้อน"], correct:2},
+    {prompt:"12. วัสดุในข้อใดที่สามารถทำให้เกิดสนิมได้", type:"mc", options:["เซรามิก","โลหะ","ไม้","พลาสติก"], correct:1},
+    {prompt:"13. การใส่น้ำร้อนที่จัดลงในแก้ว อาจทำให้เกิดการเปลี่ยนแปลงอย่างไร", type:"mc",
+      options:["แก้วร้าวและแตกได้","แก้วหดตัวเล็กกว่าเดิม","แก้วขยายตัวใหญ่กว่าเดิม","แก้วบิดเบี้ยวเสียรูป"], correct:0},
+  ]
+},
+];
+
+/* ============ RENDER ENGINE ============ */
+const root = document.getElementById('quizRoot');
+let flatQuestions = []; // {el, data, state}
+
+sections.forEach((sec, sIdx)=>{
+  const divider = document.createElement('div');
+  divider.className = 'section-divider';
+  divider.innerHTML = `<div class="num">ส่วนที่ ${sIdx+1}</div><h2>${sec.title}</h2>`;
+  if(sec.intro){
+    const p = document.createElement('p');
+    p.className = 'hint';
+    p.style.marginBottom = '10px';
+    p.textContent = sec.intro;
+    divider.appendChild(p);
+  }
+  root.appendChild(divider);
+
+  sec.questions.forEach((q)=>{
+    const qIndex = flatQuestions.length + 1;
+    const card = document.createElement('div');
+    card.className = 'qcard';
+
+    const head = document.createElement('div');
+    head.className = 'qhead';
+    head.innerHTML = `<div class="qnum">${qIndex}</div><div class="qtext">${q.prompt}${q.type==='multi' ? '<span class="hint">(เลือกได้มากกว่า 1 ข้อ)</span>' : ''}</div>`;
+    card.appendChild(head);
+
+    const optsWrap = document.createElement('div');
+    optsWrap.className = 'options';
+
+    const state = { selected: q.type === 'multi' ? [] : null };
+
+    q.options.forEach((optText, oIdx)=>{
+      const opt = document.createElement('label');
+      opt.className = 'opt';
+      const input = document.createElement('input');
+      input.type = q.type === 'multi' ? 'checkbox' : 'radio';
+      input.name = 'q' + qIndex;
+      input.value = oIdx;
+      input.addEventListener('change', ()=>{
+        if(q.type === 'multi'){
+          if(input.checked){ state.selected.push(oIdx); opt.classList.add('selected'); }
+          else { state.selected = state.selected.filter(v=>v!==oIdx); opt.classList.remove('selected'); }
+        } else {
+          state.selected = oIdx;
+          [...optsWrap.children].forEach(c=>c.classList.remove('selected'));
+          opt.classList.add('selected');
+        }
+        updateProgress();
+      });
+      const span = document.createElement('span');
+      span.textContent = optText;
+      opt.appendChild(input);
+      opt.appendChild(span);
+      optsWrap.appendChild(opt);
+    });
+
+    card.appendChild(optsWrap);
+
+    const feedback = document.createElement('div');
+    feedback.className = 'feedback';
+    card.appendChild(feedback);
+
+    root.appendChild(card);
+    flatQuestions.push({ el: card, optsEl: optsWrap, feedbackEl: feedback, data: q, state });
+  });
+});
+
+/* ============ PROGRESS ============ */
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const total = flatQuestions.length;
+
+function isAnswered(fq){
+  if(fq.data.type === 'multi') return fq.state.selected.length > 0;
+  return fq.state.selected !== null;
+}
+
+function updateProgress(){
+  const answered = flatQuestions.filter(isAnswered).length;
+  progressFill.style.width = (answered/total*100) + '%';
+  progressText.textContent = answered + ' / ' + total + ' ข้อ';
+}
+updateProgress();
+
+/* ============ SCORING ============ */
+document.getElementById('submitBtn').addEventListener('click', ()=>{
+  const unanswered = flatQuestions.filter(fq=>!isAnswered(fq));
+  if(unanswered.length > 0){
+    const ok = confirm('นักเรียนยังตอบไม่ครบ ' + unanswered.length + ' ข้อ ต้องการส่งคำตอบเลยหรือไม่?');
+    if(!ok){
+      unanswered[0].el.scrollIntoView({behavior:'smooth', block:'center'});
+      return;
+    }
+  }
+
+  let score = 0;
+  flatQuestions.forEach(fq=>{
+    const q = fq.data;
+    let isCorrect = false;
+    if(q.type === 'multi'){
+      const sel = [...fq.state.selected].sort().join(',');
+      const cor = [...q.correct].sort().join(',');
+      isCorrect = sel === cor && fq.state.selected.length > 0;
+    } else {
+      isCorrect = fq.state.selected === q.correct;
+    }
+    if(isCorrect) score++;
+
+    fq.el.classList.add(isCorrect ? 'correct' : 'incorrect');
+    const optNodes = [...fq.optsEl.children];
+    optNodes.forEach((node, idx)=>{
+      const isSelected = q.type==='multi' ? fq.state.selected.includes(idx) : fq.state.selected===idx;
+      const isRightAns = q.type==='multi' ? q.correct.includes(idx) : q.correct===idx;
+      if(isSelected) node.classList.add('selected');
+      if(!isCorrect && isRightAns) node.classList.add('answer-correct');
+      const inp = node.querySelector('input');
+      if(inp) inp.disabled = true;
+    });
+
+    if(isCorrect){
+      fq.feedbackEl.textContent = '✓ ถูกต้อง!';
+    } else {
+      let ansText;
+      if(q.type === 'multi'){
+        ansText = q.correct.map(i=>q.options[i]).join(', ');
+      } else {
+        ansText = q.options[q.correct];
+      }
+      fq.feedbackEl.textContent = '✗ ยังไม่ถูก — คำตอบที่ถูกต้องคือ: ' + ansText;
+    }
+  });
+
+  const panel = document.getElementById('resultPanel');
+  panel.style.display = 'block';
+  const pct = Math.round(score/total*100);
+  document.getElementById('scoreText').textContent = score + ' / ' + total;
+  document.getElementById('scorePercent').textContent = 'คิดเป็น ' + pct + '%';
+  let msg;
+  if(pct >= 90) msg = 'ยอดเยี่ยมมาก! เก่งวิทยาศาสตร์สุดๆ 🌟';
+  else if(pct >= 75) msg = 'ทำได้ดีมาก! เกือบเต็มแล้ว 👏';
+  else if(pct >= 60) msg = 'ทำได้ดี ลองทบทวนข้อที่ผิดอีกนิดนะ 💪';
+  else msg = 'ลองทบทวนเนื้อหาอีกครั้งแล้วมาทำใหม่นะ สู้ๆ 🌱';
+  document.getElementById('scoreMsg').textContent = msg;
+  panel.scrollIntoView({behavior:'smooth', block:'start'});
+
+  document.getElementById('submitBtn').textContent = 'ตรวจแล้ว — เลื่อนดูคะแนนด้านบน';
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('submitBtn').style.opacity = '0.6';
+  document.getElementById('submitBtn').style.cursor = 'default';
+});
+</script>
+</body>
+</html>
