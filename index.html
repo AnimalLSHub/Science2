@@ -6,20 +6,22 @@
 <title>แบบทดสอบปลายภาค ป.3 — สนุกกับวิทย์</title>
 <style>
   :root{
-    --cream:#FBF7EF;
+    --cream:#FBF9FF;
     --card:#FFFFFF;
-    --moss:#5C7A5C;
-    --moss-dark:#3F5A3F;
-    --clay:#D98E63;
-    --clay-dark:#B96E45;
-    --sky:#7FA8B8;
-    --ink:#33362E;
-    --ink-soft:#6B6E62;
-    --line:#E7E0D2;
-    --good:#4C8B5E;
-    --good-bg:#E6F3E8;
-    --bad:#C1543A;
-    --bad-bg:#FBEAE4;
+    --moss:#8E7CE8;
+    --moss-dark:#6C57D4;
+    --clay:#FF8FB1;
+    --clay-dark:#F4678F;
+    --sky:#63C7E8;
+    --mint:#5FD9AE;
+    --sun:#FFC857;
+    --ink:#3A3358;
+    --ink-soft:#8B84A8;
+    --line:#EAE3FB;
+    --good:#2FAF76;
+    --good-bg:#DDF7EA;
+    --bad:#EF5C7A;
+    --bad-bg:#FFE3EB;
     --radius:18px;
   }
   *{box-sizing:border-box;}
@@ -27,8 +29,10 @@
     margin:0;
     font-family:'Sarabun','Noto Sans Thai','Segoe UI',sans-serif;
     background:
-      radial-gradient(circle at 10% 0%, #F1ECDD 0%, transparent 45%),
-      radial-gradient(circle at 90% 10%, #EAF1E6 0%, transparent 40%),
+      radial-gradient(circle at 8% 4%, #FFE4F0 0%, transparent 40%),
+      radial-gradient(circle at 92% 8%, #DFF4FF 0%, transparent 42%),
+      radial-gradient(circle at 15% 95%, #E4F9EE 0%, transparent 40%),
+      radial-gradient(circle at 90% 90%, #FFF3D6 0%, transparent 40%),
       var(--cream);
     color:var(--ink);
     line-height:1.6;
@@ -37,18 +41,19 @@
   header.hero{
     padding:48px 20px 36px;
     text-align:center;
-    background:linear-gradient(180deg, #F1ECDD 0%, var(--cream) 100%);
+    background:linear-gradient(135deg, #FFE9F2 0%, #E9E6FF 45%, #DFF5FF 100%);
     border-bottom:1px solid var(--line);
   }
   header.hero .tag{
     display:inline-block;
-    background:var(--moss);
+    background:linear-gradient(90deg, var(--moss), var(--clay-dark));
     color:#fff;
     padding:6px 16px;
     border-radius:999px;
     font-size:0.85rem;
     letter-spacing:0.02em;
     margin-bottom:14px;
+    box-shadow:0 3px 10px rgba(140,110,230,0.28);
   }
   header.hero h1{
     font-size:2.1rem;
@@ -70,7 +75,7 @@
     position:sticky;
     top:0;
     z-index:50;
-    background:rgba(251,247,239,0.92);
+    background:rgba(251,249,255,0.9);
     backdrop-filter:blur(6px);
     border-bottom:1px solid var(--line);
     padding:10px 18px;
@@ -85,14 +90,14 @@
   .progress-track{
     flex:1;
     height:10px;
-    background:#EDE7D8;
+    background:#F0EBFF;
     border-radius:999px;
     overflow:hidden;
   }
   .progress-fill{
     height:100%;
     width:0%;
-    background:linear-gradient(90deg, var(--moss), var(--sky));
+    background:linear-gradient(90deg, var(--sky), var(--moss), var(--clay));
     border-radius:999px;
     transition:width .25s ease;
   }
@@ -124,7 +129,7 @@
     border-radius:var(--radius);
     padding:20px 22px;
     margin-bottom:16px;
-    box-shadow:0 2px 10px rgba(63,90,63,0.06);
+    box-shadow:0 3px 14px rgba(140,110,230,0.09);
     border:1px solid var(--line);
   }
   .qhead{
@@ -138,7 +143,7 @@
     width:30px;
     height:30px;
     border-radius:50%;
-    background:var(--moss);
+    background:linear-gradient(135deg, var(--moss), var(--sky));
     color:#fff;
     display:flex;
     align-items:center;
@@ -170,13 +175,13 @@
     border:1.5px solid var(--line);
     border-radius:12px;
     cursor:pointer;
-    transition:border-color .15s, background .15s;
-    background:#FEFDFB;
+    transition:border-color .15s, background .15s, transform .1s;
+    background:#FCFAFF;
   }
-  .opt:hover{ border-color:var(--sky); }
+  .opt:hover{ border-color:var(--sky); background:#F1FBFF; }
   .opt.selected{
     border-color:var(--moss);
-    background:#EEF4EC;
+    background:#F0ECFF;
   }
   .opt input{ accent-color:var(--moss); width:18px; height:18px; flex:none; }
   .opt span{ font-size:0.98rem; }
@@ -185,12 +190,12 @@
     padding:11px 14px;
     border-radius:12px;
     border:1.5px solid var(--line);
-    background:#FEFDFB;
+    background:#FCFAFF;
     font-family:inherit;
     font-size:0.98rem;
     color:var(--ink);
     appearance:none;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B6E62' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238B84A8' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
     background-repeat:no-repeat;
     background-position:right 14px center;
     background-size:16px;
@@ -202,20 +207,21 @@
     border-radius:10px;
     font-size:0.92rem;
     display:none;
+    font-weight:600;
   }
   .qcard.correct{ border-color:var(--good); background:var(--good-bg); }
   .qcard.incorrect{ border-color:var(--bad); background:var(--bad-bg); }
   .qcard.correct .feedback, .qcard.incorrect .feedback{ display:block; }
   .qcard.correct .feedback{ color:var(--good); }
   .qcard.incorrect .feedback{ color:var(--bad); }
-  .qcard.correct .opt.selected{ border-color:var(--good); background:#DEF0E1; }
-  .qcard.incorrect .opt.selected{ border-color:var(--bad); background:#F8DED6; }
-  .qcard.incorrect .opt.answer-correct{ border-color:var(--good); background:#DEF0E1; }
+  .qcard.correct .opt.selected{ border-color:var(--good); background:#CDF3E0; }
+  .qcard.incorrect .opt.selected{ border-color:var(--bad); background:#FFD3DE; }
+  .qcard.incorrect .opt.answer-correct{ border-color:var(--good); background:#CDF3E0; }
 
   .submit-bar{
     position:fixed;
     left:0; right:0; bottom:0;
-    background:rgba(251,247,239,0.95);
+    background:rgba(251,249,255,0.92);
     backdrop-filter:blur(8px);
     border-top:1px solid var(--line);
     padding:14px 18px;
@@ -224,7 +230,7 @@
     z-index:60;
   }
   .submit-btn{
-    background:var(--clay);
+    background:linear-gradient(90deg, var(--clay), var(--clay-dark));
     color:#fff;
     border:none;
     padding:14px 40px;
@@ -232,20 +238,21 @@
     font-weight:700;
     border-radius:999px;
     cursor:pointer;
-    box-shadow:0 4px 14px rgba(185,110,69,0.35);
-    transition:transform .12s, background .15s;
+    box-shadow:0 4px 16px rgba(244,103,143,0.4);
+    transition:transform .12s, box-shadow .15s;
   }
-  .submit-btn:hover{ background:var(--clay-dark); transform:translateY(-1px); }
+  .submit-btn:hover{ transform:translateY(-1px); box-shadow:0 6px 18px rgba(244,103,143,0.48); }
   .submit-btn:active{ transform:translateY(0); }
 
   .result-panel{
-    background:linear-gradient(135deg, var(--moss) 0%, var(--moss-dark) 100%);
+    background:linear-gradient(135deg, var(--moss) 0%, var(--sky) 55%, var(--mint) 100%);
     color:#fff;
     border-radius:var(--radius);
     padding:32px 26px;
     text-align:center;
     margin:24px 0 30px;
     display:none;
+    box-shadow:0 8px 24px rgba(140,110,230,0.25);
   }
   .result-panel .score{
     font-size:3rem;
