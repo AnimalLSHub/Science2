@@ -657,6 +657,12 @@ sections.forEach((sec, sIdx)=>{
 
     const state = { selected: q.type === 'multi' ? [] : null };
 
+    const feedback = document.createElement('div');
+    feedback.className = 'feedback';
+
+    const fq = { el: card, optsEl: optsWrap, feedbackEl: feedback, data: q, state };
+    flatQuestions.push(fq);
+
     q.options.forEach((optText, oIdx)=>{
       const opt = document.createElement('label');
       opt.className = 'opt';
@@ -673,6 +679,7 @@ sections.forEach((sec, sIdx)=>{
           [...optsWrap.children].forEach(c=>c.classList.remove('selected'));
           opt.classList.add('selected');
         }
+        evaluateQuestion(fq);
         updateProgress();
       });
       const span = document.createElement('span');
@@ -683,13 +690,9 @@ sections.forEach((sec, sIdx)=>{
     });
 
     card.appendChild(optsWrap);
-
-    const feedback = document.createElement('div');
-    feedback.className = 'feedback';
     card.appendChild(feedback);
 
     root.appendChild(card);
-    flatQuestions.push({ el: card, optsEl: optsWrap, feedbackEl: feedback, data: q, state });
   });
 });
 
@@ -701,6 +704,43 @@ const total = flatQuestions.length;
 function isAnswered(fq){
   if(fq.data.type === 'multi') return fq.state.selected.length > 0;
   return fq.state.selected !== null;
+}
+
+/* ============ INSTANT PER-QUESTION FEEDBACK ============ */
+function evaluateQuestion(fq){
+  const q = fq.data;
+  const optNodes = [...fq.optsEl.children];
+
+  if(!isAnswered(fq)){
+    fq.el.classList.remove('correct', 'incorrect');
+    fq.feedbackEl.textContent = '';
+    optNodes.forEach(node=>node.classList.remove('answer-correct'));
+    return;
+  }
+
+  let isCorrect;
+  if(q.type === 'multi'){
+    const sel = [...fq.state.selected].sort().join(',');
+    const cor = [...q.correct].sort().join(',');
+    isCorrect = sel === cor;
+  } else {
+    isCorrect = fq.state.selected === q.correct;
+  }
+
+  fq.el.classList.remove('correct', 'incorrect');
+  fq.el.classList.add(isCorrect ? 'correct' : 'incorrect');
+
+  optNodes.forEach((node, idx)=>{
+    const isRightAns = q.type==='multi' ? q.correct.includes(idx) : q.correct===idx;
+    node.classList.toggle('answer-correct', !isCorrect && isRightAns);
+  });
+
+  if(isCorrect){
+    fq.feedbackEl.textContent = '✓ ถูกต้อง!';
+  } else {
+    const ansText = q.type === 'multi' ? q.correct.map(i=>q.options[i]).join(', ') : q.options[q.correct];
+    fq.feedbackEl.textContent = '✗ ยังไม่ถูก — คำตอบที่ถูกต้องคือ: ' + ansText;
+  }
 }
 
 function updateProgress(){
